@@ -85,3 +85,17 @@ ros2 run micro_ros_setup create_agent_ws.sh
 ros2 run micro_ros_setup build_agent.sh
 source install/local_setup.bash
 ```
+
+### What is the micro-ROS Agent? 🤖📡
+
+#### The micro-ROS Agent is like a translator or middleman between micro-ROS nodes (running on tiny devices or a Linux system) and the main ROS 2 network.
+#### 🔹 Role of micro-ROS Agent
+
+####    Microcontrollers (tiny computers) can't directly communicate with a full ROS 2 system.
+####    The micro-ROS Agent acts as a bridge between:
+####        micro-ROS nodes (running on embedded devices or Linux).
+####        ROS 2 nodes (running on a standard computer).
+####    It receives messages from micro-ROS nodes and forwards them to ROS 2, and vice versa.
+
+#### 💡 Think of it like an interpreter 🗣️
+#### Imagine a person speaking English (ROS 2) and another speaking Spanish (micro-ROS). The micro-ROS Agent is the interpreter who helps them understand each other.
