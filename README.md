@@ -39,14 +39,11 @@ source install/local_setup.bash
 ### The micro-ROS build system consists of four steps:
 
 ####    Create – Downloads required code repositories and cross-compilation toolchains.
-##### Cross-compilation is the process of compiling code on one system (the host) to run on a different system (the target) that may have a different architecture, operating system, or environment.
+##### Cross-compilation is the process of compiling code on one system (the host: Our Computer) to run on a different system (the target:here Raspberry Pi Pico) that may have a different architecture, operating system, or environment.
 
-##### For example:
+##### For example: You write and compile code on your Ubuntu PC (x86_64).The compiled binary is meant to run on a microcontroller (Raspberry Pi Pico).
 
-#####    You write and compile code on your Ubuntu PC (x86_64).
-#####    The compiled binary is meant to run on a microcontroller (ARM Cortex-M).
-
-#### Since the microcontroller may lack the necessary resources (CPU, memory, OS) to run a full compiler, cross-compilation allows you to generate compatible binaries on your powerful development machine.
+### Since the microcontroller may lack the necessary resources (CPU, memory, OS) to run a full compiler, cross-compilation allows you to generate compatible binaries on your powerful development machine.
 
 ####    Configure – Selects the app, transport method, and agent details.
 ####    Build – Cross-compiles the selected app.
