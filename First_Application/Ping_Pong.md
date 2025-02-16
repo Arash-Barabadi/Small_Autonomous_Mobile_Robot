@@ -99,3 +99,18 @@ source install/local_setup.bash
 
 #### 💡 Think of it like an interpreter 🗣️
 #### Imagine a person speaking English (ROS 2) and another speaking Spanish (micro-ROS). The micro-ROS Agent is the interpreter who helps them understand each other.
+
+
+# Step 7: Run the micro-ROS Application
+
+##    Start the micro-ROS agent:
+```bash
+ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
+```
+## Open another terminal and start the micro-ROS node:
+```bash
+source /opt/ros/$ROS_DISTRO/setup.bash
+source install/local_setup.bash
+export RMW_IMPLEMENTATION=rmw_microxrcedds
+ros2 run micro_ros_demos_rclc ping_pong
+```
