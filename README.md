@@ -9,7 +9,7 @@
 ### Micro-Ros installation: 
 ### 1- Source the ROS 2 installation
 ```bash 
-source /opt/ros/humble/setup.bash
+source /opt/ros/$ROS_DISTRO/setup.bash
 ```
 ### 2- Create a workspace and download the micro-ROS tools
 ```bash
@@ -24,10 +24,13 @@ sudo apt update && rosdep update
 rosdep install --from-paths src --ignore-src -y
 ```
 
-# Install pip
+### 4- Install pip
+```bash
 sudo apt-get install python3-pip
+```
 
-# Build micro-ROS tools and source them
+### 5- Build micro-ROS tools and source them
+```bash
 colcon build
 source install/local_setup.bash
 ```
