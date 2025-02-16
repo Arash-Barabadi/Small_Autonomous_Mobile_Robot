@@ -6,10 +6,10 @@
 # Step 1: Install ROS 2 and micro-ROS Build System
 ### ROS2 installation: Please refer to the following website: https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html for installing ROS2 humble.
 ### Micro-Ros installation: 
-``bash
-# Source the ROS 2 installation
-source /opt/ros/$ROS_DISTRO/setup.bash
+```bash
 
+source /opt/ros/$ROS_DISTRO/setup.bash
+```
 # Create a workspace and download the micro-ROS tools
 mkdir microros_ws
 cd microros_ws
