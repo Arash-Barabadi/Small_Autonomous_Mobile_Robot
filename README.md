@@ -48,3 +48,13 @@ source install/local_setup.bash
 ####    2-Configure – Selects the app, transport method, and agent details.
 ####    3-Build – Cross-compiles the selected app.
 ####    4-Flash – Installs the compiled binaries on the hardware.
+
+# Step 3: Create a Firmware Workspace
+
+## Create the firmware workspace:
+```bash
+ros2 run micro_ros_setup create_firmware_ws.sh host
+```
+### A new firmware/ folder is created, containing:
+
+###    main.c: Application logic & CMakeLists.txt: Compilation script
