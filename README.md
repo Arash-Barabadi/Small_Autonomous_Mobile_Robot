@@ -58,3 +58,16 @@ ros2 run micro_ros_setup create_firmware_ws.sh host
 ### A new firmware/ folder is created, containing:
 
 ###    main.c: Application logic & CMakeLists.txt: Compilation script
+
+# Step 4: Configure the Ping Pong Application
+
+##    Locate the built-in ping_pong app:
+```bash
+microros_ws/firmware/src/uros/micro-ROS-demos/rclc/ping_pong
+```
+
+### The app has two publisher-subscriber pairs:
+
+###    A ping publisher sends unique ping messages.
+###    A ping subscriber listens for external pings.
+###    A pong publisher responds when a ping is received.
