@@ -66,3 +66,22 @@ microros_ws/firmware/src/uros/micro-ROS-demos/rclc/ping_pong
 ###    A ping publisher sends unique ping messages.
 ###    A ping subscriber listens for external pings.
 ###    A pong publisher responds when a ping is received.
+
+# Step 5: Build the Firmware
+
+## Since micro-ROS is running on Linux (not a microcontroller), no cross-compilation is needed. Build the firmware:
+```bash
+ros2 run micro_ros_setup build_firmware.sh
+source install/local_setup.bash
+```
+# Step 6: Create and Build the micro-ROS Agent
+
+##    Download the micro-ROS agent packages:
+```bash
+ros2 run micro_ros_setup create_agent_ws.sh
+```
+## Build the agent:
+```bash
+ros2 run micro_ros_setup build_agent.sh
+source install/local_setup.bash
+```
