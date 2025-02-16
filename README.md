@@ -6,7 +6,7 @@
 # Step 1: Install ROS 2 and micro-ROS Build System
 ### ROS2 installation: Please refer to the following website: https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html for installing ROS2 humble.
 ### Micro-Ros installation: 
-’’’bash
+´´bash
 # Source the ROS 2 installation
 source /opt/ros/$ROS_DISTRO/setup.bash
 
@@ -25,5 +25,5 @@ sudo apt-get install python3-pip
 # Build micro-ROS tools and source them
 colcon build
 source install/local_setup.bash
-’’’
+´´´
 
