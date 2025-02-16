@@ -1,5 +1,3 @@
-
-# Here we go:
 # Step 1: Install ROS 2 and micro-ROS Build System
 ### ROS2 installation: 
 ### Please refer to the following website: https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html for installing ROS2 humble.
