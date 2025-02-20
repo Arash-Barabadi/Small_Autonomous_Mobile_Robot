@@ -114,3 +114,50 @@ source install/local_setup.bash
 export RMW_IMPLEMENTATION=rmw_microxrcedds
 ros2 run micro_ros_demos_rclc ping_pong
 ```
+
+# Step 8: Test the Application
+##  8.1 Verify the Ping Messages
+
+##  Open a new terminal and listen to the /microROS/ping topic:
+
+```bash
+ros2 topic echo /microROS/ping
+```
+
+##  Expected output:
+```bash
+    stamp:
+      sec: 20
+      nanosec: 867000000
+    frame_id: '1344887256_1085377743'
+    ---
+```
+
+##  8.2 Send a Fake Ping and Verify Pong Response
+
+##    Open a new terminal and listen to the /microROS/pong topic:
+```bash
+ros2 topic echo /microROS/pong
+```
+## In another terminal, send a fake ping:
+```bash
+ros2 topic pub --once /microROS/ping std_msgs/msg/Header '{frame_id: "fake_ping"}'
+```
+## Expected output in /microROS/ping subscriber:
+```bash
+
+stamp:
+  sec: 0
+  nanosec: 0
+frame_id: fake_ping
+---
+```
+## Expected response in /microROS/pong:
+```bash
+stamp:
+  sec: 0
+  nanosec: 0
+frame_id: fake_ping
+---
+```
+
