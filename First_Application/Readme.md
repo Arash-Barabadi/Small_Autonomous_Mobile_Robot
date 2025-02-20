@@ -199,6 +199,6 @@ frame_id: fake_ping
 
 ###    When multiple instances of the ping_pong node run:
 
-####        Each instance sends pings with a unique identifier.
-####        Other instances respond with pongs, mimicking communication between independent micro-ROS devices.
-####        This allows for debugging and performance evaluation without needing multiple physical devices.
+####        1-Each instance sends pings with a unique identifier.
+####        2-Other instances respond with pongs, mimicking communication between independent micro-ROS devices.
+####        3-This allows for debugging and performance evaluation without needing multiple physical devices.
