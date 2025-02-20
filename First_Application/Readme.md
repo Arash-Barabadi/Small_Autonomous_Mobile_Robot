@@ -202,3 +202,32 @@ frame_id: fake_ping
 ####        1-Each instance sends pings with a unique identifier.
 ####        2-Other instances respond with pongs, mimicking communication between independent micro-ROS devices.
 ####        3-This allows for debugging and performance evaluation without needing multiple physical devices.
+## One of the advantages of having a Linux micro-ROS app is that you don’t need to buy a bunch of hardware in order to test some multi-node micro-ROS apps. So, with the same micro-ROS agent of the last section, let’s open four different command lines and run the following on each
+
+```bash
+cd microros_ws
+
+source /opt/ros/$ROS_DISTRO/setup.bash
+source install/local_setup.bash
+
+export RMW_IMPLEMENTATION=rmw_microxrcedds
+
+ros2 run micro_ros_demos_rclc ping_pong
+```
+## As soon as all micro-ROS nodes are up and connected to the micro-ROS agent you will see them interacting:
+```bash
+user@user:~$ ros2 run micro_ros_demos_rclc ping_pong
+Ping send seq 1711620172_1742614911                         <---- This micro-ROS node sends a ping with ping ID "1711620172" and node ID "1742614911"
+Pong for seq 1711620172_1742614911 (1)                      <---- The first mate pongs my ping
+Pong for seq 1711620172_1742614911 (2)                      <---- The second mate pongs my ping
+Pong for seq 1711620172_1742614911 (3)                      <---- The third mate pongs my ping
+Ping received with seq 1845948271_546591567. Answering.     <---- A ping is received from a mate identified as "546591567", let's pong it.
+Ping received with seq 232977719_1681483056. Answering.     <---- A ping is received from a mate identified as "1681483056", let's pong it.
+Ping received with seq 1134264528_1107823050. Answering.    <---- A ping is received from a mate identified as "1107823050", let's pong it.
+Ping send seq 324239260_1742614911
+Pong for seq 324239260_1742614911 (1)
+Pong for seq 324239260_1742614911 (2)
+Pong for seq 324239260_1742614911 (3)
+Ping received with seq 1435780593_546591567. Answering.
+Ping received with seq 2034268578_1681483056. Answering.
+```
