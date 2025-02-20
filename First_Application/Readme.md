@@ -58,7 +58,7 @@ ros2 run micro_ros_setup create_firmware_ws.sh host
 
 ##    Locate the built-in ping_pong app:
 ```bash
-microros_ws/firmware/src/uros/micro-ROS-demos/rclc/ping_pong
+microros_ws/src/uros/micro-ROS-demos/rclc/ping_pong
 ```
 
 ### The app has two publisher-subscriber pairs:
