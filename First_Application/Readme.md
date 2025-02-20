@@ -118,13 +118,13 @@ ros2 run micro_ros_demos_rclc ping_pong
 # Step 8: Test the Application
 ##  8.1 Verify the Ping Messages
 
-##  Open a new terminal and listen to the /microROS/ping topic:
+##  Now, we want to check that everything is working. Open a new command line. We are going to listen to the ping topic with ROS 2 to check whether the micro-ROS Ping Pong node is correctly publishing the expected pings:
 
 ```bash
 ros2 topic echo /microROS/ping
 ```
 
-##  Expected output:
+##  Expected output(we should see the topic messages published by the Ping Pong node every 5 seconds):
 ```bash
     stamp:
       sec: 20
@@ -132,32 +132,56 @@ ros2 topic echo /microROS/ping
     frame_id: '1344887256_1085377743'
     ---
 ```
+## At this point, we know that our app is publishing pings. 
+## Let’s check if it also answers to someone else’s pings. If this works, it’ll publish a pong. So, first of all, let’s subscribe with ROS 2 to the pong topic from a new shell (notice that initially we don’t expect to receive any pong, since none has been sent yet):
 
-##  8.2 Send a Fake Ping and Verify Pong Response
 
 ##    Open a new terminal and listen to the /microROS/pong topic:
 ```bash
 ros2 topic echo /microROS/pong
 ```
-## In another terminal, send a fake ping:
+##  8.2 And now, let’s publish a fake_ping with ROS 2 from yet another command line and Verify Pong Response:
 ```bash
 ros2 topic pub --once /microROS/ping std_msgs/msg/Header '{frame_id: "fake_ping"}'
 ```
-## Expected output in /microROS/ping subscriber:
+## Now, we should see this fake_ping in the ping subscriber console, along with the micro-ROS pings:
 ```bash
-
+user@user:~$ ros2 topic echo /microROS/ping
+stamp:
+  sec: 0
+  nanosec: 0
+frame_id: fake_ping
+---
+stamp:
+  sec: 305
+  nanosec: 973000000
+frame_id: '451230256_1085377743'
+---
+stamp:
+  sec: 310
+  nanosec: 957000000
+frame_id: '2084670932_1085377743'
+---
+```
+## Also, we expect that, because of having received the fake_ping, the micro-ROS node will answer with a pong:
+```bash
+user@user:~$ ros2 run micro_ros_demos_rcl ping_pong
+Ping send seq 1706097268_1085377743
+Ping send seq 181171802_1085377743
+Ping send seq 1385567526_1085377743
+Ping send seq 926583793_1085377743
+Ping send seq 1831510138_1085377743
+Ping received with seq fake_ping. Answering.
+Ping send seq 1508705084_1085377743
+Ping send seq 1702133625_1085377743
+Ping send seq 176104820_1085377743
+```
+## As a consequence, in the pong subscriber console, we should see the micro-ROS app answer to our fake_ping:
+```bash
+user@user:~$ ros2 topic echo /microROS/pong
 stamp:
   sec: 0
   nanosec: 0
 frame_id: fake_ping
 ---
 ```
-## Expected response in /microROS/pong:
-```bash
-stamp:
-  sec: 0
-  nanosec: 0
-frame_id: fake_ping
----
-```
-
