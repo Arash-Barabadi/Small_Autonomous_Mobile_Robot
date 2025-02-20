@@ -185,3 +185,20 @@ stamp:
 frame_id: fake_ping
 ---
 ```
+# Step 9: Run Multiple Ping Pong Nodes
+
+##    No Extra Hardware Required – Unlike embedded systems, where each micro-ROS node would typically run on a separate microcontroller or board, Linux allows you to simulate multiple micro-ROS nodes on the same machine.
+
+##    Multi-Node Testing – You can run multiple instances of the ping_pong application in different terminals, each acting as an independent micro-ROS node. This helps simulate and test real-world scenarios where multiple nodes communicate.
+
+##    Using the Same micro-ROS Agent – Since micro-ROS nodes need an agent to communicate with ROS 2, all instances can share the same running agent, reducing setup complexity.
+
+##    Practical Testing Method – By opening four different terminals, each running a separate instance of the ping_pong node, you can observe how they interact with each other in a simulated multi-node environment.
+
+##    What Happens in Practice?
+
+##    When multiple instances of the ping_pong node run:
+
+##    Each instance sends pings with a unique identifier.
+##    Other instances respond with pongs, mimicking communication between independent micro-ROS devices.
+##    This allows for debugging and performance evaluation without needing multiple physical devices.
