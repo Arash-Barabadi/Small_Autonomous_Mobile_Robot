@@ -6,4 +6,4 @@
 ###    No Extra Layers: Unlike rclcpp (C++) or rclpy (Python), which add extra layers on top of rcl, rclc only introduces new features when absolutely necessary.
 ###    Executors: One new feature in rclc is the executor, which helps manage multiple tasks efficiently.
 
-#### In short, rclc = micro-ROS version of rcl, but easier to use!
+## In short, rclc = micro-ROS version of rcl, but easier to use!
