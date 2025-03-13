@@ -1,5 +1,4 @@
-## This section is about micro-ROS C API : rclc , 
-## which helps us write micro-ROS programs easily.
+## This section is about micro-ROS C API : rclc , (which helps us write micro-ROS programs easily)
 
 ###    Similar to ROS2: The main building blocks (like publishers, subscribers, services, and timers) work the same way in micro-ROS as they do in regular ROS2.
 ###    Built on ROS2 Core: micro-ROS uses the same ROS2 client library (rcl) as standard ROS2.
