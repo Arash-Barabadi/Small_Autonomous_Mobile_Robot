@@ -1,5 +1,5 @@
 # Caster Wheel Spacer
-### as the robot needs to be stable, it's decks are requred to be parrallel to the ground. For this I needed to design a simple spacer beteen caster wheel and the deck to compensate this height difference:
+### As the robot needs to be stable, its decks must be parallel to the ground. For this, I designed a simple spacer between the caster wheel and the deck to compensate for the height difference.
 <img width="1080" height="1192" alt="image" src="https://github.com/user-attachments/assets/321e8782-35f1-4994-a0a9-2c19ef0fca02" />
 
 ### The 3D printed spacer:
