@@ -5,3 +5,6 @@
 
 # Micro-ROS 
 ## The ROS framework, which can be considered quite large, needs to be brought onto the microcontroller. This goal can be achieved using the micro-ROS framework, which my robot is based on.
+
+# 1st aim
+### My first aim is to drive the robot over Wi-Fi communication between my laptop and the ESP32.I’ll use PlatformIO for building, testing, and deploying code on the ESP32, as it is a better alternative to the Arduino IDE. PlatformIO is installed on VS Code.
