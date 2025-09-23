@@ -2,3 +2,6 @@
 
 ### The first challenge is budgeting. I have already designed an architecture for a teleoperated car using ROS2 on a Jetson Orin NX, which is straightforward since the Jetson provides a powerful computing platform for compiling and executing all necessary code.
 ### To reduce costs, I opted to use a ESP32 as my main microcontroller, which costs only about €5 instead of €800!  The main limitation of the ESP32 is its lack of direct support for ROS2. However, it does support micro-ROS. Therefore, I decided to implement all the code within the micro-ROS framework.
+
+# Micro-ROS 
+## The ROS framework, which can be considered quite large, needs to be brought onto the microcontroller. This goal can be achieved using the micro-ROS framework, which my robot is based on.
