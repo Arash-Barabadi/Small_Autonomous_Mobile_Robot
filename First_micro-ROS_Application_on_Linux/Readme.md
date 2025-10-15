@@ -1,4 +1,6 @@
 # Step 1: Install ROS 2 and micro-ROS Build System
+# Micro-ROS 
+## The ROS framework, which can be considered quite large, needs to be brought onto the microcontroller. This goal can be achieved using the micro-ROS framework, which my robot is based on.
 ### ROS2 installation: 
 ### Please refer to the following website: https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html for installing ROS2 humble.
 ### Micro-Ros installation: 
