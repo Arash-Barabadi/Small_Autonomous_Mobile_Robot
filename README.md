@@ -1,7 +1,7 @@
 # Small Autonomous Mobile Robot
 
 
-![20251104_104700](https://github.com/user-attachments/assets/a1631e1f-5b69-4274-863f-578aac3d7001)
+<img width="1500" height="2000" alt="20251104_104700" src="https://github.com/user-attachments/assets/1b28712f-b365-4f31-84fe-4311f9f9e6d3" />
 
 
 [🎥 Watch my project demo on YouTube](https://www.youtube.com/watch?v=UUFdapDHFw0)
