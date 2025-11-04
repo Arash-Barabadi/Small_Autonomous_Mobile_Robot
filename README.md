@@ -1,11 +1,7 @@
 # Small Autonomous Mobile Robot
 
-
-<img width="300" height="400" alt="20251104_104700" src="https://github.com/user-attachments/assets/647b3a5f-ee14-4965-8a08-5e74b09f87aa" />
-
-
 [🎥 Watch my project demo on YouTube](https://www.youtube.com/watch?v=UUFdapDHFw0)
-
+<img width="300" height="400" alt="20251104_104700" src="https://github.com/user-attachments/assets/647b3a5f-ee14-4965-8a08-5e74b09f87aa" />
 
 
 ### The first challenge is budgeting. I have already designed an architecture for a teleoperated car using ROS2 on a Jetson Orin NX, which is straightforward since the Jetson provides a powerful computing platform for compiling and executing all necessary code.
