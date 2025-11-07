@@ -4,6 +4,8 @@
 
 <img width="300" height="400" alt="20251104_104700" src="https://github.com/user-attachments/assets/647b3a5f-ee14-4965-8a08-5e74b09f87aa" />
 
+## Instructions to run and lead the robot
+### 1- Start the micro-ROS Agent (UDP over Wi-Fi)
 ```bash
 ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ```
