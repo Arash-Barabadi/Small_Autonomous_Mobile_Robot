@@ -9,7 +9,7 @@
 ```bash
 ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ```
-### 2- drive it with the standard ROS 2 keyboard teleop that publishes geometry_msgs/Twist on /cmd_vel.
+### 2- We can drive it with the standard ROS 2 keyboard teleop that publishes geometry_msgs/Twist on /cmd_vel.
 
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
