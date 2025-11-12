@@ -17,8 +17,9 @@ ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
-
-# 1st aim
+# Challenges
+## 2nd Adding Lidar
+## 1st Watch dog
 ## My first aim is to drive the robot over Wi-Fi communication between my laptop and the ESP32. I’ll use PlatformIO for building, testing, and deploying code on the ESP32, as it is a better alternative to the Arduino IDE. PlatformIO is installed on VS Code.
 ## Challenges accomplished
 ### 1- Originally, the robot continued moving indefinitely if no new /cmd_vel message was received (for example, when the Wi-Fi connection dropped or the teleop node stopped). This caused unsafe behavior — the last velocity command remained active and the robot kept accelerating or turning without control. 
