@@ -26,16 +26,43 @@
 ###  Mode: online_async
 ### Frames: map → odom → base_link → base_laser
 
-## Instructions to run and lead the robot
+## Terminal Commands Used (ubuntu)
 ### 1- Start the micro-ROS Agent (UDP over Wi-Fi)
 ```bash
-ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
+arash@arash-ThinkPad-X390:~$ ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ```
-### 2- We can drive it with the standard ROS 2 keyboard teleop that publishes geometry_msgs/Twist (think of it like format of coommand) on /cmd_vel, our robot will subscribe to /cmd_vel (think of it like the channel where the command is sent) and moves accordingly. 
+### 2- Teleoperation - We can drive it with the standard ROS 2 keyboard teleop that publishes geometry_msgs/Twist (think of it like format of coommand) on /cmd_vel, our robot will subscribe to /cmd_vel (think of it like the channel where the command is sent) and moves accordingly. 
 
 ```bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
+arash@arash-ThinkPad-X390:~$ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
+### 3- Static Transforms
+#### Base  → Lidar
+
+```bash
+arash@arash-ThinkPad-X390:~/ros2_ws$ ros2 run tf2_ros static_transform_publisher   0.1 0 0.15 0 0 0   base_link base_laser
+```
+#### Base → IMU
+
+```bash
+arash@arash-ThinkPad-X390:~/ros2_ws$ ros2 run tf2_ros static_transform_publisher 0.00 0.00 0.05 0 0 0 base_link imu_link
+```
+### 4- Wheel Odometry Node
+
+```bash
+arash@arash-ThinkPad-X390:~/ros2_ws$ ros2 run wheel_odometry wheel_odometry_node
+```
+
+### 5- SLAM (slam_toolbox)
+```bash
+arash@arash-ThinkPad-X390:~/ros2_ws$ ros2 launch slam_toolbox online_async_launch.py slam_params_file:=/home/$USER/ros2_ws/config/slam_params.yaml
+```
+### 6- RVIZ
+
+```bash
+arash@arash-ThinkPad-X390:~/ros2_ws$ rviz2
+```
+
 # Challenges
 ## 2nd Adding Lidar
 ## 1st Watch dog
