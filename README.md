@@ -7,6 +7,9 @@
 
 <img width="300" height="400" alt="20251104_104700" src="https://github.com/user-attachments/assets/647b3a5f-ee14-4965-8a08-5e74b09f87aa" />
 
+![Today_New_Robot](https://github.com/user-attachments/assets/6f7433d9-cd6c-4391-b4fc-638de655e4b7)
+
+
 ## System Overview
 ### Sensors & Sources
 #### - Wheel encoders → wheel odometry node → /odom + odom → base_link TF
