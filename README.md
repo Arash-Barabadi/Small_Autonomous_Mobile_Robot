@@ -7,6 +7,18 @@
 
 <img width="300" height="400" alt="20251104_104700" src="https://github.com/user-attachments/assets/647b3a5f-ee14-4965-8a08-5e74b09f87aa" />
 
+## System Overview
+### Sensors & Sources
+#### - Wheel encoders → wheel odometry node → /odom + odom → base_link TF
+#### - LD14P LiDAR → micro-ROS → /scan (frame_id: base_laser)
+### Static TF:
+#### - base_link → base_laser
+#### - base_link → imu_link
+## SLAM
+###  Package: slam_toolbox
+###  Mode: online_async
+### Frames: map → odom → base_link → base_laser
+
 ## Instructions to run and lead the robot
 ### 1- Start the micro-ROS Agent (UDP over Wi-Fi)
 ```bash
