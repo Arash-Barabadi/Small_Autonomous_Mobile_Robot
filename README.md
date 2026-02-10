@@ -12,7 +12,7 @@
 ```bash
 ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ```
-### 2- We can drive it with the standard ROS 2 keyboard teleop that publishes geometry_msgs/Twist (think of it like format of coommand) on /cmd_vel, our robot will subscribe to /cmd_vel (the channel where the command is sent) and moves accordingly. 
+### 2- We can drive it with the standard ROS 2 keyboard teleop that publishes geometry_msgs/Twist (think of it like format of coommand) on /cmd_vel, our robot will subscribe to /cmd_vel (think of it like the channel where the command is sent) and moves accordingly. 
 
 ```bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
