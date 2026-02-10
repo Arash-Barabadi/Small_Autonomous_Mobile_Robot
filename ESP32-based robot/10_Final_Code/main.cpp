@@ -24,8 +24,8 @@
 #endif
 
 // ============================= micro-ROS Agent IP and Port =============================
-char ssid[]     = "FRITZ!Box 7560 IQ";
-char password[] = "28715329684835834345";
+char ssid[]     = "Name of the modem appearing in Network";
+char password[] = "the Modem device password";
 IPAddress agent_ip(192, 168, 178, 164);
 const uint16_t agent_port = 8888;
 
