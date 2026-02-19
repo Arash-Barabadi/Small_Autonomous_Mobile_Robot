@@ -28,6 +28,13 @@ IPAddress agent_ip(192, 168, 178, 164);   // PC IP on the same WiFi
 const uint16_t agent_port = 8888;
 ```
 
+## Find PC IP: On Ubuntu:
+
+```bash
+ip a
+```
+
+## Note: Use the inet ... address under WiFi interface (usually wlp, e.g. inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s20f3).
 
 # TF:
 
