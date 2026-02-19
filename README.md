@@ -18,7 +18,7 @@
 ### Transport: WiFi UDP (udp4)
 ### Requirements: 1- ESP32 and PC must be on the same network, 2- ESP32 must be able to reach the PC IP, 3- Port 8888/UDP must not be blocked by firewall
 ## Home WiFi Setup (Router Network)
-## A- (microcontroller side) ESP32 config
+## A- (Microcontroller Side) ESP32 config
 
 ### Find PC IP: On Ubuntu:
 
