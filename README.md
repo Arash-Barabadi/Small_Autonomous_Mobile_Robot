@@ -12,8 +12,8 @@
 # Networking (ESP32 ↔ ROS 2 PC)
 ## This robot uses micro-ROS over WiFi (UDP). The ESP32 connects to a WiFi network and sends ROS 2 messages to the micro-ROS agent running on the PC.
 ## Architecture
-### ESP32 publishes: /scan, /imu/data, /wheel_ticks
-### ESP32 subscribes: /cmd_vel
+### ESP32 publishes: /scan, /imu/data, /wheel_ticks, ....
+### ESP32 subscribes: /cmd_vel, ...
 ### PC runs: micro_ros_agent (UDP on port 8888)
 ### Transport: WiFi UDP (udp4)
 ### Requirements: 1- ESP32 and PC must be on the same network, 2- ESP32 must be able to reach the PC IP, 3- Port 8888/UDP must not be blocked by firewall
