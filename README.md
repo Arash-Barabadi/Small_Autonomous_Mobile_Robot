@@ -36,7 +36,7 @@ ip a
 
 ## Note: Use the inet ... address under WiFi interface (usually wlp, e.g. inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s20f3). Example output:
 ```bash
-inet 192.168.43.12/24
+inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s20f3
 ```
 
 ## Start micro-ROS agent
