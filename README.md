@@ -34,7 +34,7 @@ inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s
 ```cpp
 char ssid[]     = "YOUR_WIFI_NAME";
 char password[] = "YOUR_WIFI_PASSWORD";
-IPAddress agent_ip(192, 168, 178, 164);   // PC IP on the same WiFi
+IPAddress agent_ip(10, 126, 78, 187);   // PC IP on the same WiFi
 const uint16_t agent_port = 8888;
 ```
 
