@@ -18,8 +18,18 @@
 ### Transport: WiFi UDP (udp4)
 ### Requirements: 1- ESP32 and PC must be on the same network, 2- ESP32 must be able to reach the PC IP, 3- Port 8888/UDP must not be blocked by firewall
 ## Home WiFi Setup (Router Network)
-### ESP32 config
+## A- (microcontroller side) ESP32 config
 
+### Find PC IP: On Ubuntu:
+
+```bash
+ip a
+```
+
+### Note: Use the inet ... address under WiFi interface (usually wlp, e.g. inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s20f3). Example output:
+```bash
+inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s20f3
+```
 ### In main.cpp:
 ```cpp
 char ssid[]     = "YOUR_WIFI_NAME";
@@ -28,18 +38,7 @@ IPAddress agent_ip(192, 168, 178, 164);   // PC IP on the same WiFi
 const uint16_t agent_port = 8888;
 ```
 
-## Find PC IP: On Ubuntu:
-
-```bash
-ip a
-```
-
-## Note: Use the inet ... address under WiFi interface (usually wlp, e.g. inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s20f3). Example output:
-```bash
-inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s20f3
-```
-
-## Start micro-ROS agent
+## B- (PC side) Start micro-ROS agent
 ```bash
 ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ```
