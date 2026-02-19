@@ -36,6 +36,17 @@ ip a
 
 ## Note: Use the inet ... address under WiFi interface (usually wlp, e.g. inet 10.126.78.187/24 brd 10.126.78.255 scope global dynamic noprefixroute wlp0s20f3).
 
+## Start micro-ROS agent
+```bash
+ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
+```
+
+Verify through :
+```bash
+ros2 topic list
+ros2 topic echo /scan --once
+```
+
 # TF:
 
 <img width="863" height="939" alt="image" src="https://github.com/user-attachments/assets/42e45042-70ee-4584-9e41-9056bdc7d7cb" />
