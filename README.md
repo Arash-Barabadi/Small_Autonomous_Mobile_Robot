@@ -80,7 +80,7 @@ arash@arash-ThinkPad-X390:~$ ros2 run teleop_twist_keyboard teleop_twist_keyboar
 #### Base  → Lidar
 
 ```bash
-ros2 run tf2_ros static_transform_publisher   0 0 0.04125 3.14159 0 0   base_link base_laser
+ros2 run tf2_ros static_transform_publisher   --x 0 --y 0 --z 0.04125   --roll 0 --pitch 0 --yaw 3.14159265   --frame-id base_link --child-frame-id base_laser
 ```
 #### Base → IMU
 
