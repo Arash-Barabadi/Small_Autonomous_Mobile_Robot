@@ -69,12 +69,12 @@ ros2 topic echo /scan --once
 ## Terminal Commands Used (ubuntu)
 ### 1- Start the micro-ROS Agent (UDP over Wi-Fi)
 ```bash
-arash@arash-ThinkPad-X390:~$ ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
+ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ```
 ### 2- Teleoperation - We can drive it with the standard ROS 2 keyboard teleop that publishes geometry_msgs/Twist (think of it like format of coommand) on /cmd_vel, our robot will subscribe to /cmd_vel (think of it like the channel where the command is sent) and moves accordingly. 
 
 ```bash
-arash@arash-ThinkPad-X390:~$ ros2 run teleop_twist_keyboard teleop_twist_keyboard
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 ### 3- Static Transforms
 #### Base  → Lidar
@@ -89,18 +89,18 @@ ros2 run tf2_ros static_transform_publisher 0.053 0.00751 -0.007 3.14159 0 0 bas
 ```
 ### 4- Wheel Odometry Node
 
-```bash
-arash@arash-ThinkPad-X390:~/ros2_ws$ ros2 run wheel_odometry wheel_odometry_node
+```bashr
+ros2 run wheel_odometry wheel_odometry_node
 ```
 
 ### 5- SLAM (slam_toolbox)
 ```bash
-arash@arash-ThinkPad-X390:~/ros2_ws$ ros2 launch slam_toolbox online_async_launch.py slam_params_file:=/home/$USER/ros2_ws/config/slam_params.yaml
+ros2 launch slam_toolbox online_async_launch.py slam_params_file:=/home/$USER/ros2_ws/config/slam_params.yaml
 ```
 ### 6- RVIZ
 
 ```bash
-arash@arash-ThinkPad-X390:~/ros2_ws$ rviz2
+rviz2
 ```
 
 # Challenges
