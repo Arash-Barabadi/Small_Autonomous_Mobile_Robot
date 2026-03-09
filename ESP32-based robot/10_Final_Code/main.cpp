@@ -52,14 +52,24 @@ const int ENC_R_B = 33;
 static constexpr bool INVERT_LEFT_DIR  = false;
 static constexpr bool INVERT_RIGHT_DIR = false;
 
-// ---------- Tuning & normalization ----------
-static constexpr float TRACK      = 0.20f;  // wheel separation (m)
-static constexpr float MAX_V      = 0.50f;  // m/s at full-scale cmd
-static constexpr float MAX_W      = 2.00f;  // rad/s at full-scale cmd
-static constexpr float K_LEFT     = 1.00f;
-static constexpr float K_RIGHT    = 1.00f;
-static constexpr uint8_t MIN_DUTY = 20;
-static constexpr float DEADBAND   = 0.01f;
+// ============================= Drive tuning ============================================
+// Physical robot parameters
+static constexpr float TRACK = 0.20f;   // wheel separation (m)
+static constexpr float MAX_V = 0.50f;   // max linear velocity command (m/s)
+static constexpr float MAX_W = 2.00f;   // max angular velocity command (rad/s)
+
+// Side scaling, if one full side is slightly stronger/weaker
+static constexpr float K_LEFT  = 1.00f;
+static constexpr float K_RIGHT = 1.00f;
+
+// Direction-specific minimum PWM to overcome static friction
+// These are initial values. Tune them on your robot.
+static constexpr uint8_t MIN_DUTY_L_FWD = 25;
+static constexpr uint8_t MIN_DUTY_L_REV = 45;  // likely needs more if CCW turn is weak
+static constexpr uint8_t MIN_DUTY_R_FWD = 25;
+static constexpr uint8_t MIN_DUTY_R_REV = 25;
+
+static constexpr float DEADBAND = 0.01f;
 
 // ============================= LiDAR (LD14P) =============================================
 static constexpr int LIDAR_RX_PIN = 16;
@@ -180,12 +190,24 @@ void error_loop() {
   while (true) delay(100);
 }
 
-static inline int16_t speedToPwm(float s_norm) {
-  if (s_norm >  1.0f) s_norm =  1.0f;
-  if (s_norm < -1.0f) s_norm = -1.0f;
-  if (fabsf(s_norm) < DEADBAND) return 0;
+static inline int16_t speedToPwmSide(float s_norm, bool is_left) {
+  s_norm = constrain(s_norm, -1.0f, 1.0f);
+
+  if (fabsf(s_norm) < DEADBAND) {
+    return 0;
+  }
+
+  uint8_t min_duty = 25;
+
+  if (is_left) {
+    min_duty = (s_norm >= 0.0f) ? MIN_DUTY_L_FWD : MIN_DUTY_L_REV;
+  } else {
+    min_duty = (s_norm >= 0.0f) ? MIN_DUTY_R_FWD : MIN_DUTY_R_REV;
+  }
+
   float mag = fabsf(s_norm);
-  uint8_t duty = (uint8_t)(MIN_DUTY + mag * (255 - MIN_DUTY));
+  uint8_t duty = (uint8_t)(min_duty + mag * (255 - min_duty));
+
   return (s_norm >= 0.0f) ? (int16_t)duty : -(int16_t)duty;
 }
 
@@ -195,14 +217,22 @@ void cmdVelCallback(const void *msgin) {
 
   const auto *msg = (const geometry_msgs__msg__Twist *)msgin;
 
-  float v = constrain(msg->linear.x  / MAX_V, -1.0f, 1.0f);
-  float w = constrain(msg->angular.z / MAX_W, -1.0f, 1.0f);
+  // Use physical units first, then normalize after mixing.
+  float v = constrain(msg->linear.x,  -MAX_V, MAX_V);
+  float w = constrain(msg->angular.z, -MAX_W, MAX_W);
 
-  float left_norm  = (v - w * TRACK / 2.0f) * K_LEFT;
-  float right_norm = (v + w * TRACK / 2.0f) * K_RIGHT;
+  // Differential drive wheel linear speeds (m/s)
+  float left_mps  = (v - w * TRACK / 2.0f) * K_LEFT;
+  float right_mps = (v + w * TRACK / 2.0f) * K_RIGHT;
 
-  setMotor(L_IN1, L_IN2, 0, speedToPwm(left_norm));
-  setMotor(R_IN1, R_IN2, 1, speedToPwm(right_norm));
+  // Max possible wheel speed magnitude under commanded limits
+  float wheel_max = MAX_V + MAX_W * TRACK / 2.0f;
+
+  float left_norm  = constrain(left_mps  / wheel_max, -1.0f, 1.0f);
+  float right_norm = constrain(right_mps / wheel_max, -1.0f, 1.0f);
+
+  setMotor(L_IN1, L_IN2, 0, speedToPwmSide(left_norm,  true));
+  setMotor(R_IN1, R_IN2, 1, speedToPwmSide(right_norm, false));
 }
 
 void checkCmdTimeout() {
@@ -442,6 +472,8 @@ void setup() {
   ledcSetup(1, 5000, 8);
   ledcAttachPin(L_PWM, 0);
   ledcAttachPin(R_PWM, 1);
+
+  safetyStop();
 
   // IMU I2C + BNO085
   Wire.begin(21, 22, 400000);
