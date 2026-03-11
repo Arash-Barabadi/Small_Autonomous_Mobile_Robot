@@ -77,12 +77,12 @@ ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 ### 3- Static Transforms
-#### Base  → Lidar (unit m)
+#### Base  → Lidar (unit meter, radian)
 
 ```bash
 ros2 run tf2_ros static_transform_publisher   --x 0 --y 0 --z 0.04125   --roll 0 --pitch 0 --yaw 0   --frame-id base_link --child-frame-id base_laser
 ```
-#### Base → IMU (unit m)
+#### Base → IMU (unit meter, radian)
 
 ```bash
 ros2 run tf2_ros static_transform_publisher --x -0.0674 --y 0.006355 --z -0.0053 --roll 0 --pitch 0  --yaw -1.57 --frame-id base_link --child-frame-id imu_link
