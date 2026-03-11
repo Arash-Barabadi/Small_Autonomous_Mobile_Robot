@@ -80,12 +80,12 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 #### Base  → Lidar
 
 ```bash
-ros2 run tf2_ros static_transform_publisher   --x 0 --y 0 --z 0.04125   --roll 0 --pitch 0 --yaw 3.14159265   --frame-id base_link --child-frame-id base_laser
+ros2 run tf2_ros static_transform_publisher   --x 0 --y 0 --z 0.04125   --roll 0 --pitch 0 --yaw 0   --frame-id base_link --child-frame-id base_laser
 ```
 #### Base → IMU
 
 ```bash
-ros2 run tf2_ros static_transform_publisher 0.053 0.00751 -0.007 3.14159 0 0 base_link imu_link
+ros2 run tf2_ros static_transform_publisher --x -0.0674 --y 0.006355 --z -0.0053 --roll 0 --pitch 0  --yaw -1.57 --frame-id base_link --child-frame-id imu_link
 ```
 ### 4- Wheel Odometry Node
 
