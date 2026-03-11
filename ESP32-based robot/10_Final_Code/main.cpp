@@ -54,8 +54,8 @@ static constexpr bool INVERT_RIGHT_DIR = false;
 
 // ============================= Drive tuning ============================================
 // Physical robot parameters
-static constexpr float TRACK = 0.20f;   // wheel separation (m)
-static constexpr float MAX_V = 0.50f;   // max linear velocity command (m/s)
+static constexpr float TRACK = 0.165f;   // wheel separation (m)
+static constexpr float MAX_V = 0.5f;   // max linear velocity command (m/s)
 static constexpr float MAX_W = 2.00f;   // max angular velocity command (rad/s)
 
 // Side scaling, if one full side is slightly stronger/weaker
@@ -64,10 +64,10 @@ static constexpr float K_RIGHT = 1.00f;
 
 // Direction-specific minimum PWM to overcome static friction
 // These are initial values. Tune them on your robot.
-static constexpr uint8_t MIN_DUTY_L_FWD = 25;
-static constexpr uint8_t MIN_DUTY_L_REV = 45;  // likely needs more if CCW turn is weak
-static constexpr uint8_t MIN_DUTY_R_FWD = 25;
-static constexpr uint8_t MIN_DUTY_R_REV = 25;
+static constexpr uint8_t MIN_DUTY_L_FWD = 55;
+static constexpr uint8_t MIN_DUTY_L_REV = 100;  // likely needs more if CCW turn is weak
+static constexpr uint8_t MIN_DUTY_R_FWD = 55;
+static constexpr uint8_t MIN_DUTY_R_REV = 55;
 
 static constexpr float DEADBAND = 0.01f;
 
@@ -217,22 +217,33 @@ void cmdVelCallback(const void *msgin) {
 
   const auto *msg = (const geometry_msgs__msg__Twist *)msgin;
 
-  // Use physical units first, then normalize after mixing.
   float v = constrain(msg->linear.x,  -MAX_V, MAX_V);
   float w = constrain(msg->angular.z, -MAX_W, MAX_W);
 
-  // Differential drive wheel linear speeds (m/s)
   float left_mps  = (v - w * TRACK / 2.0f) * K_LEFT;
   float right_mps = (v + w * TRACK / 2.0f) * K_RIGHT;
 
-  // Max possible wheel speed magnitude under commanded limits
-  float wheel_max = MAX_V + MAX_W * TRACK / 2.0f;
+  // Normalize mainly with MAX_V so full forward can reach full PWM
+  float left_norm  = constrain(left_mps  / MAX_V, -1.0f, 1.0f);
+  float right_norm = constrain(right_mps / MAX_V, -1.0f, 1.0f);
 
-  float left_norm  = constrain(left_mps  / wheel_max, -1.0f, 1.0f);
-  float right_norm = constrain(right_mps / wheel_max, -1.0f, 1.0f);
+  int16_t left_pwm  = speedToPwmSide(left_norm,  true);
+  int16_t right_pwm = speedToPwmSide(right_norm, false);
 
-  setMotor(L_IN1, L_IN2, 0, speedToPwmSide(left_norm,  true));
-  setMotor(R_IN1, R_IN2, 1, speedToPwmSide(right_norm, false));
+  setMotor(L_IN1, L_IN2, 0, left_pwm);
+  setMotor(R_IN1, R_IN2, 1, right_pwm);
+  Serial.print("cmd v=");
+  Serial.print(msg->linear.x);
+  Serial.print(" w=");
+  Serial.print(msg->angular.z);
+  Serial.print(" left_norm=");
+  Serial.print(left_norm);
+  Serial.print(" right_norm=");
+  Serial.print(right_norm);
+  Serial.print(" left_pwm="); 
+  Serial.print(left_pwm);
+  Serial.print(" right_pwm=");
+  Serial.println(right_pwm);
 }
 
 void checkCmdTimeout() {
