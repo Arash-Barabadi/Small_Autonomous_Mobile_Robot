@@ -110,10 +110,29 @@ rviz2
 ## Challenges accomplished
 ### 2- The LD14P LiDAR outputs scan data using a clockwise angle convention and a left-handed coordinate system, which does not match the ROS REP-103 standard (counter-clockwise, right-handed). This mismatch caused mirrored scans and incorrect visualization in RViz and SLAM. To fix this, the LiDAR angle interpretation was corrected directly inside main.cpp on the ESP32 instead of trying to compensate with TF. Each raw LD14 angle is converted using θ_ros = −θ_ld14, ensuring the scan follows the ROS counter-clockwise convention. The LaserScan beam indexing and angle range were also updated to [-π, π], allowing the LiDAR to behave like a standard ROS sensor while TF now only represents the physical mounting of the LiDAR.
 ```cpp
+/// The scan was redefined to cover a full ROS-style range:
+static constexpr float ANGLE_MIN_RAD = -PI;
+static constexpr float ANGLE_MAX_RAD =  PI;
+static constexpr float ANGLE_INC_RAD = (2 * PI) / SCAN_BEAMS;
+/// Added helper function for angle conversion
+/// This performs the critical transformation: clockwise  → counter-clockwise & left-handed → right-handed
+static inline float ld14DegToRosRad(float angle_deg_ld14)
+{
+    float angle_rad_ld14 = angle_deg_ld14 * DEG2RAD;
+    float angle_rad_ros  = -angle_rad_ld14;
+    return wrapToPi(angle_rad_ros);
+}
+/// Inside lidarSpinOnce() each raw LD14 point is converted before assigning it to a LaserScan beam:
+float angle_rad_ros = ld14DegToRosRad(angle_deg_ld14);
 
+float beam_f = (angle_rad_ros - ANGLE_MIN_RAD) / ANGLE_INC_RAD;
+int beam = lroundf(beam_f);
+
+/// Unobserved scan beams are filled with INFINITY:
+
+scan_ranges[i] = INFINITY;
 
 ```
-
 ### 1- Originally, the robot continued moving indefinitely if no new /cmd_vel message was received (for example, when the Wi-Fi connection dropped or the teleop node stopped). This caused unsafe behavior — the last velocity command remained active and the robot kept accelerating or turning without control. 
 ### To solve this, a command timeout WATCHDOG was implemented. It continuously checks the time since the last received command and automatically stops both motors if no new command arrives within 250 ms as below:
 ```cpp
