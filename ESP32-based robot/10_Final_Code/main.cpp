@@ -55,17 +55,16 @@ static constexpr bool INVERT_RIGHT_DIR = false;
 // ============================= Drive tuning ============================================
 // Physical robot parameters
 static constexpr float TRACK = 0.165f;   // wheel separation (m)
-static constexpr float MAX_V = 0.5f;   // max linear velocity command (m/s)
-static constexpr float MAX_W = 2.00f;   // max angular velocity command (rad/s)
+static constexpr float MAX_V = 0.5f;     // max linear velocity command (m/s)
+static constexpr float MAX_W = 2.00f;    // max angular velocity command (rad/s)
 
 // Side scaling, if one full side is slightly stronger/weaker
 static constexpr float K_LEFT  = 1.00f;
 static constexpr float K_RIGHT = 1.00f;
 
 // Direction-specific minimum PWM to overcome static friction
-// These are initial values. Tune them on your robot.
 static constexpr uint8_t MIN_DUTY_L_FWD = 55;
-static constexpr uint8_t MIN_DUTY_L_REV = 100;  // likely needs more if CCW turn is weak
+static constexpr uint8_t MIN_DUTY_L_REV = 100;
 static constexpr uint8_t MIN_DUTY_R_FWD = 55;
 static constexpr uint8_t MIN_DUTY_R_REV = 55;
 
@@ -78,9 +77,27 @@ static constexpr int LIDAR_TX_PIN = 4;
 static constexpr uint8_t LIDAR_HEADER            = 0x54;
 static constexpr int     LIDAR_POINTS_PER_PACKET = 12;
 
-static constexpr int   SCAN_BEAMS    = 720;
-static constexpr float ANGLE_MIN_RAD = 0.0f;
-static constexpr float ANGLE_INC_RAD = (2.0f * 3.14159265f) / SCAN_BEAMS;
+// LD14 raw convention:
+// - 0 degree = forward
+// - angle increases CLOCKWISE
+// - left-handed
+//
+// ROS LaserScan convention:
+// - 0 rad = forward
+// - angle increases COUNTER-CLOCKWISE
+// - right-handed
+//
+// So we convert each raw LD14 angle using:
+//   angle_ros = -angle_ld14
+//
+// We publish a full 360° scan in ROS convention over [-pi, +pi).
+static constexpr int   SCAN_BEAMS   = 720;
+static constexpr float PI_F         = 3.14159265f;
+static constexpr float TWO_PI_F     = 2.0f * PI_F;
+static constexpr float DEG2RAD_F    = PI_F / 180.0f;
+
+static constexpr float ANGLE_MIN_RAD = -PI_F;
+static constexpr float ANGLE_INC_RAD = TWO_PI_F / SCAN_BEAMS;
 static constexpr float ANGLE_MAX_RAD = ANGLE_MIN_RAD + ANGLE_INC_RAD * (SCAN_BEAMS - 1);
 
 // ============================= BNO085 IMU ================================================
@@ -163,6 +180,25 @@ static inline void stamp_now(builtin_interfaces__msg__Time *t)
   }
 }
 
+// ============================= LiDAR angle helpers =======================================
+// Wrap any angle to [-pi, +pi)
+static inline float wrapToPi(float a)
+{
+  while (a >= PI_F)  a -= TWO_PI_F;
+  while (a < -PI_F)  a += TWO_PI_F;
+  return a;
+}
+
+// Convert LD14 raw angle in degrees to ROS angle in radians
+// LD14: clockwise positive
+// ROS : counter-clockwise positive
+static inline float ld14DegToRosRad(float angle_deg_ld14)
+{
+  float angle_rad_ld14 = angle_deg_ld14 * DEG2RAD_F;
+  float angle_rad_ros  = -angle_rad_ld14;
+  return wrapToPi(angle_rad_ros);
+}
+
 // ================================= Motor drive ==========================================
 void setMotor(int in1, int in2, int pwm_chan, int16_t speed_pwm) {
   uint8_t duty = (uint8_t)constrain((int)abs(speed_pwm), 0, 255);
@@ -223,7 +259,6 @@ void cmdVelCallback(const void *msgin) {
   float left_mps  = (v - w * TRACK / 2.0f) * K_LEFT;
   float right_mps = (v + w * TRACK / 2.0f) * K_RIGHT;
 
-  // Normalize mainly with MAX_V so full forward can reach full PWM
   float left_norm  = constrain(left_mps  / MAX_V, -1.0f, 1.0f);
   float right_norm = constrain(right_mps / MAX_V, -1.0f, 1.0f);
 
@@ -232,6 +267,7 @@ void cmdVelCallback(const void *msgin) {
 
   setMotor(L_IN1, L_IN2, 0, left_pwm);
   setMotor(R_IN1, R_IN2, 1, right_pwm);
+
   Serial.print("cmd v=");
   Serial.print(msg->linear.x);
   Serial.print(" w=");
@@ -240,7 +276,7 @@ void cmdVelCallback(const void *msgin) {
   Serial.print(left_norm);
   Serial.print(" right_norm=");
   Serial.print(right_norm);
-  Serial.print(" left_pwm="); 
+  Serial.print(" left_pwm=");
   Serial.print(left_pwm);
   Serial.print(" right_pwm=");
   Serial.println(right_pwm);
@@ -379,15 +415,16 @@ bool lidarReadFrame(LidarFrame &frame) {
 
 void lidarSpinOnce() {
   LidarFrame f;
-  const float DEG2RAD = 0.01745329252f;
 
   while (lidarReadFrame(f)) {
-    float start_deg = f.start_angle * 0.01f;
-    float end_deg   = f.end_angle   * 0.01f;
+    float start_deg = f.start_angle * 0.01f;   // LD14 raw: clockwise degrees
+    float end_deg   = f.end_angle   * 0.01f;   // LD14 raw: clockwise degrees
 
+    // Detect one full revolution
     if (!lidar_first_frame) {
       if ((start_deg + 5.0f) < lidar_last_start_deg && lidar_frames_in_scan > 0) {
 
+        // Fill missing beams
         for (int i = 0; i < SCAN_BEAMS; ++i) {
           if (!scan_valid[i]) {
             scan_ranges[i]      = INFINITY;
@@ -401,6 +438,7 @@ void lidarSpinOnce() {
         scan_msg.intensities.size = SCAN_BEAMS;
         RCSOFTCHECK(rcl_publish(&scan_pub, &scan_msg, NULL));
 
+        // Clear next scan
         for (int i = 0; i < SCAN_BEAMS; ++i) {
           scan_valid[i] = false;
         }
@@ -412,24 +450,40 @@ void lidarSpinOnce() {
     lidar_last_start_deg = start_deg;
     lidar_frames_in_scan++;
 
+    // LD14 raw scan runs clockwise from start_deg to end_deg.
+    // If wrapping occurs, unwrap end_deg.
     if (end_deg < start_deg) end_deg += 360.0f;
 
     float span_deg = end_deg - start_deg;
+
     for (int i = 0; i < LIDAR_POINTS_PER_PACKET; ++i) {
-      float frac = (LIDAR_POINTS_PER_PACKET == 1) ? 0.0f : (float)i / (float)(LIDAR_POINTS_PER_PACKET - 1);
-      float angle_deg = start_deg + span_deg * frac;
+      float frac = (LIDAR_POINTS_PER_PACKET == 1)
+                 ? 0.0f
+                 : (float)i / (float)(LIDAR_POINTS_PER_PACKET - 1);
 
-      while (angle_deg >= 360.0f) angle_deg -= 360.0f;
-      while (angle_deg < 0.0f)   angle_deg += 360.0f;
+      // Raw LD14 angle in degrees, clockwise-positive
+      float angle_deg_ld14 = start_deg + span_deg * frac;
 
-      float beam_f = (angle_deg * DEG2RAD - ANGLE_MIN_RAD) / ANGLE_INC_RAD;
+      while (angle_deg_ld14 >= 360.0f) angle_deg_ld14 -= 360.0f;
+      while (angle_deg_ld14 < 0.0f)    angle_deg_ld14 += 360.0f;
+
+      // Convert raw LD14 angle to ROS angle in radians
+      float angle_rad_ros = ld14DegToRosRad(angle_deg_ld14);
+
+      // Map ROS angle into LaserScan beam index
+      float beam_f = (angle_rad_ros - ANGLE_MIN_RAD) / ANGLE_INC_RAD;
       int   beam   = (int)lroundf(beam_f);
+
+      // Handle edge case where angle is very close to +pi
+      if (beam == SCAN_BEAMS) beam = 0;
+
       if (beam < 0 || beam >= SCAN_BEAMS) continue;
 
       uint16_t d_mm = f.point[i].distance;
       if (d_mm == 0) continue;
 
       float d_m = d_mm * 0.001f;
+
       if (!scan_valid[beam] || d_m < scan_ranges[beam]) {
         scan_ranges[beam]      = d_m;
         scan_intensities[beam] = (float)f.point[i].intensity;
@@ -559,6 +613,8 @@ void setup() {
   scan_msg.header.frame_id.size     = strlen(lidar_frame);
   scan_msg.header.frame_id.capacity = scan_msg.header.frame_id.size + 1;
 
+  // Publish ROS-compatible full 360° scan:
+  // angle 0 = forward, positive angles = left side (CCW)
   scan_msg.angle_min       = ANGLE_MIN_RAD;
   scan_msg.angle_max       = ANGLE_MAX_RAD;
   scan_msg.angle_increment = ANGLE_INC_RAD;
