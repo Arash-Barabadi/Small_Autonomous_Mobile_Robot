@@ -10,6 +10,9 @@
 ![Today_New_Robot](https://github.com/user-attachments/assets/6f7433d9-cd6c-4391-b4fc-638de655e4b7)
 
 # Networking (ESP32 ↔ ROS 2 PC)
+
+## A guide how to intall micro-ros agent in our system is as follows:
+## https://cps.unileoben.ac.at/install-micro-ros-on-esp32/
 ## This robot uses micro-ROS over WiFi (UDP). The ESP32 connects to a WiFi network and sends ROS 2 messages to the micro-ROS agent running on the PC.
 ## Architecture
 ### ESP32 publishes: /scan, /imu/data, /wheel_ticks, ....
