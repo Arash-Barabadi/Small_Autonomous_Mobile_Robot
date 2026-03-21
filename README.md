@@ -5,9 +5,15 @@
 
 [🎥 Watch my project demo on YouTube](https://www.youtube.com/watch?v=UUFdapDHFw0)
 
-<img width="300" height="400" alt="20251104_104700" src="https://github.com/user-attachments/assets/647b3a5f-ee14-4965-8a08-5e74b09f87aa" />
+<img width="726" height="694" alt="image" src="https://github.com/user-attachments/assets/61477df1-b32f-45a5-b045-df3a07960808" />
 
-![Today_New_Robot](https://github.com/user-attachments/assets/6f7433d9-cd6c-4391-b4fc-638de655e4b7)
+
+![Robot_1st](https://github.com/user-attachments/assets/4693b5db-3369-45c2-93c8-e64371168808)
+
+![Robot_2nd](https://github.com/user-attachments/assets/46b4d3b1-096e-4664-ba26-10dafb0cfbc8)
+
+
+
 
 # Networking (ESP32 ↔ ROS 2 PC)
 
