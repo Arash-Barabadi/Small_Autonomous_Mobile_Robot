@@ -111,6 +111,10 @@ ros2 launch slam_toolbox online_async_launch.py slam_params_file:=/home/$USER/ro
 ```bash
 rviz2
 ```
+### 7- Navigation
+```bash
+ros2 launch nav2_bringup navigation_launch.py use_sim_time:=false params_file:=/home/arash/nav2_params.yaml
+```
 
 # Challenges
 ## Challenges accomplished
