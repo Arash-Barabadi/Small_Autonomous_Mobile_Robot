@@ -104,7 +104,7 @@ ros2 run wheel_odometry wheel_odometry_node
 
 ### 5- SLAM (slam_toolbox)
 ```bash
-ros2 launch slam_toolbox online_async_launch.py slam_params_file:=/home/$USER/ros2_ws/config/slam_params.yaml
+ros2 launch slam_toolbox online_async_launch.py slam_params_file:=/home/$USER/ros2_ws/src/wheel_odometry/config/slam_params.yaml
 ```
 ### 6- RVIZ
 
@@ -113,7 +113,7 @@ rviz2
 ```
 ### 7- Navigation
 ```bash
-ros2 launch nav2_bringup navigation_launch.py use_sim_time:=false params_file:=/home/arash/nav2_params.yaml
+ros2 launch nav2_bringup navigation_launch.py use_sim_time:=false params_file:=/home/$USER/ros2_ws/src/wheel_odometry/config/nav2_params.yaml
 ```
 
 # Challenges
