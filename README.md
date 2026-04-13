@@ -110,6 +110,7 @@ ros2 launch slam_toolbox online_async_launch.py slam_params_file:=/home/$USER/ro
 
 ```bash
 rviz2
+rviz2 -d /opt/ros/jazzy/share/nav2_bringup/rviz/nav2_default_view.rviz
 ```
 ### 7- Navigation
 ```bash
