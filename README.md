@@ -118,6 +118,34 @@ ros2 launch nav2_bringup navigation_launch.py use_sim_time:=false params_file:=/
 
 # Challenges
 ## Challenges accomplished
+## Pure rotation fix
+
+### During testing, the robot could move forward and turn while moving, but it could not rotate in place with a pure angular command like:
+
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.0}, angular: {z: 2.0}}" -r 5
+```
+### Interestingly, rotation worked as soon as a very small forward velocity was added, for example:
+
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.02}, angular: {z: 2.0}}" -r 5
+```
+### This showed that the issue was not in ROS 2 communication, but in the drivetrain behavior: pure in-place rotation was not overcoming static friction.
+### Fix: A small internal linear assist was added inside cmdVelCallback() for pure rotation commands, before deadzone compensation:
+``` cpp
+if (fabsf(v) < 0.001f && fabsf(w) > 0.0f) {
+  v = ROTATION_ASSIST_LINEAR;
+}
+
+v = compensateLinearDeadzone(v);
+w = compensateAngularDeadzone(w);
+```
+### with
+``` cpp
+static constexpr float ROTATION_ASSIST_LINEAR = 0.02f;
+```
+### Result : After this change, pure rotation worked reliably.
+
 ## 1st Watch dog
 ## My first aim is to drive the robot over Wi-Fi communication between my laptop and the ESP32. I’ll use PlatformIO for building, testing, and deploying code on the ESP32, as it is a better alternative to the Arduino IDE. PlatformIO is installed on VS Code.
 
