@@ -205,3 +205,7 @@ int beam = lroundf(beam_f);
 scan_ranges[i] = INFINITY;
 
 ```
+
+
+
+### https://www.linkedin.com/posts/prof-dr-ing-lars-n-josler-b35999161_robotics-engineering-opensource-share-7448631464512032768-y-hW?utm_source=share&utm_medium=member_desktop&rcm=ACoAABWMeAEBYvpkryqTOmLc7-YcbOXk3-kVX2M
