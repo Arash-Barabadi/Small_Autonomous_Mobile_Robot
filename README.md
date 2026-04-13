@@ -118,7 +118,7 @@ ros2 launch nav2_bringup navigation_launch.py use_sim_time:=false params_file:=/
 
 # Challenges
 ## Challenges accomplished
-## Pure rotation fix
+## __ Pure rotation fix __
 
 ### During testing, the robot could move forward and turn while moving, but it could not rotate in place with a pure angular command like:
 
@@ -146,7 +146,7 @@ static constexpr float ROTATION_ASSIST_LINEAR = 0.02f;
 ```
 ### Result : After this change, pure rotation worked reliably.
 
-## 1st Watch dog
+## __ Watch dog __
 ## My first aim is to drive the robot over Wi-Fi communication between my laptop and the ESP32. I’ll use PlatformIO for building, testing, and deploying code on the ESP32, as it is a better alternative to the Arduino IDE. PlatformIO is installed on VS Code.
 
 ### 1- Originally, the robot continued moving indefinitely if no new /cmd_vel message was received (for example, when the Wi-Fi connection dropped or the teleop node stopped). This caused unsafe behavior — the last velocity command remained active and the robot kept accelerating or turning without control. 
