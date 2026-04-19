@@ -109,12 +109,25 @@ ros2 launch slam_toolbox online_async_launch.py slam_params_file:=/home/$USER/ro
 ### 6- RVIZ
 
 ```bash
-rviz2
 rviz2 -d /opt/ros/jazzy/share/nav2_bringup/rviz/nav2_default_view.rviz
 ```
 ### 7- Navigation
 ```bash
-ros2 launch nav2_bringup navigation_launch.py use_sim_time:=false params_file:=/home/$USER/ros2_ws/src/wheel_odometry/config/nav2_params.yaml
+// ros2 launch nav2_bringup navigation_launch.py use_sim_time:=false params_file:=/home/$USER/ros2_ws/src/wheel_odometry/config/nav2_params.yaml
+ros2 launch wheel_odometry navigation.launch.py map:=/home/arash/ros2_ws/maps/test_map.yaml
+
+
+ros2 topic pub --once /initialpose geometry_msgs/msg/PoseWithCovarianceStamped "{
+  header: {frame_id: 'map'},
+  pose: {
+    pose: {
+      position: {x: 0.0, y: 0.0, z: 0.0},
+      orientation: {z: 0.0, w: 1.0}
+    },
+    covariance: [0.25, 0.0, 0.0, 0.0, 0.0, 0.0,
+                 0.0, 0.25, 0.0, 0.0, 0.0, 0.0,
+}"}              0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
+
 ```
 
 # Challenges
